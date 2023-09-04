@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'assets/estilos/styles.css' %}" />
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+
+    <title>Tarea M7_AE6_individual</title>
+  </head>
+
+  <body >
+    {% load crispy_forms_tags %}
+     <div class="container">
+       
+     <header>
+              <nav class="navbar navbar-expand-lg navbar bg-primary" data-bs-theme="dark" >
+              <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'index' %}">Bienvenidos</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                  <ul class="navbar-nav mr-auto">    
+                          
+                    <li class="dropdown">                      
+                       <a class="nav-link dropdown-toggle" href="#" role="button" type="button"  data-bs-toggle="dropdown" aria-expanded="false">
+                          <spam style="color: rgb(250, 250, 250);"><strong>Administración de Tareas</strong></spam>
+                        </a>
+                          <ul class="dropdown-menu dropdown-menu-dark">
+                          <li><a class="dropdown-item" href="{% url 'administra_tareas_estado' %}">Administra tareas, por Estado</a></li>
+                          <li><a class="dropdown-item" href="{% url 'administra_tareas_tarea' %}">Administra tareas, por N°Tarea</a></li>
+                          <li><a class="dropdown-item" href="{% url 'administra_tareas_vencimiento' %}">Administra tareas, por Vencimiento</a></li>
+                          <li><a class="dropdown-item" href="{% url 'registro_tareas' %}">Registro de tareas</a></li>
+                        </ul>
+                      </li>                  
+
+
+                    {% if user.is_authenticated %}  
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'logout' %}"><strong>Cerrar sesión</strong></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#" style="color:#FF0000";><strong>Usuario activo: @{{ user.username}}</strong></a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'login' %}"><strong>Iniciar sesión</strong></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'registro' %}" style="color:#eb7d15;"><strong>Registro usuarios</strong></a>
+                    </li>
+                     {% endif %}
+                  </ul>
+                </div>
+              </div>
+            </nav>
+     </header>
+    </div>
+
+
+    <br><br>
+    <section class="container">
+      <div class="card-contacto">
+        <div class="card-body">
+          <h3>Login de usuarios</h3>
+          <br><br>
+          <div class="row mt-5">
+            <div class="col-d-12 text-center">
+              {% if formulario.errors %}
+                <p style="color: red;">Usuario y contraseña no coinciden.  Inténtelo nuevamente.</p>
+              {% else %}
+                <p style="color: rgb(65, 76, 240);">Favor, ingresar con el siguente formulario.</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <form action="" method="POST">       
+            {% csrf_token %}
+              <div class="form-group">
+                <div class="col-md-12 text-center">
+                  {{ formulario.usuario.label }}
+                </div>
+                <div class="col-md-12 text-center">
+                    {{ formulario.usuario }}
+                </div>
+              <div>
+
+              <br>
+              <div class="form-group">
+                <div class="col-md-12 text-center">
+                  {{ formulario.password.label }}
+                </div>
+                <div class="col-md-12 text-center">
+                    {{ formulario.password }}
+                </div>
+              <div>
+
+              <br><br>
+              <div class="row">
+                <div class="col-md-12 text-center" style="margin-top: 1rem;">
+                  <button type="submit" id="btnEnviar" class="button btn-primary float-right">Ingresar</button>
+                </div>
+              <div>        
+          </form>         
+        </div>
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                  <strong style="color: red;">Mensajes: </strong> {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+              {% endfor %}
+            {% endif %}
+        
+      </div>
+    </section>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+
+  </body>
+
+  <br>
+  <div class="container">
+  <footer >
+    <div>
+      <p id="pie">
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=[url]"><img id="pie-img" src="{% static 'assets/imagenes/linkedin_socialnetwork_17441.png' %}" alt="Linkedin">Linkedin</a>
+        <a href="https://twitter.com/intent/tweet?text=[text]&url=[url]&hashtags=[hashtag]"><img id="pie-img" src="{% static 'assets/imagenes/twiter.png' %}" alt="Twitter">Twitter</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://espai.es"><img id="pie-img" src="{% static 'assets/imagenes/facebook_logo_icon_229298.png' %}" alt="Facebook">Facebook</a>
+      </p>
+
+      <p>Copyright &copy; 2023 - Desarrollos Informáticos SA</p>
+    </div>
+  </footer>
+</div>
+</html>

@@ -1,0 +1,75 @@
+h2{
+    color: rgb(52, 31, 243);
+    font-size: 50px;
+}
+#titulo{
+    background-color: #dbdcf5;
+    text-align: center;
+    color: rgb(219, 9, 9);
+}
+body{
+    background-color: rgb(190, 229, 233);
+}
+
+footer {
+	background-color:#9596b9;
+	height: 50%;
+    text-align: center;
+    padding: 15px;
+    color: rgb(19, 1, 1);  
+}
+#pie{
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 100;   
+   
+}
+
+.navbar {
+    background-color: #f8f9fa;
+  }
+.navbar-brand {
+    font-weight: bold;
+  }
+  .nav-item {
+    padding: 0 10px;
+  }
+  .first-color { 
+    background: #a8e6cf; 
+  }
+    
+  .second-color { 
+    background: #fdffab; 
+  }
+  
+  .third-color { 
+    background: #ffd3b6; 
+  }
+  
+  .fourth-color { 
+    background: #ffaaa5; 
+  }
+
+  h2{ 
+    font-family: 'Ubuntu', sans-serif;
+  }
+  h5{ 
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
+  }
+  label{
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
+  }
+ 
+  #derecha{
+ 
+    background-color:#ffd3b6 ;
+    
+  }
+  #derecha:hover{
+    background-color: #9596b9;
+    transform: translate3d(0, -5px, 0);
+    
+  }

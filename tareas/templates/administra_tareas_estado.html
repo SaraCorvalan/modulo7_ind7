@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+  
+  <link rel="stylesheet" href="{% static 'assets/estilos/styles.css' %}" />
+  <title>Tarea M7_AE7_individual</title>
+</head>
+
+<body >
+{% load crispy_forms_tags %}
+  <div class="container">
+    <header>
+    <nav class="navbar navbar-expand-lg navbar bg-primary" data-bs-theme="dark">
+      <a class="navbar-brand" href="{% url 'index' %}">Bienvenidos</a>
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          
+          <li class="dropdown">                      
+              <a class="nav-link dropdown-toggle" href="#" role="button" type="button"  data-bs-toggle="dropdown" aria-expanded="false">
+                <spam style="color: rgb(250, 250, 250);"><strong>Administración de Tareas</strong></spam>
+              </a>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                    <li><a class="dropdown-item" href="{% url 'administra_tareas_estado' %}">Administra tareas, por Estado</a></li>
+                    <li><a class="dropdown-item" href="{% url 'administra_tareas_tarea' %}">Administra tareas, por N°Tarea</a></li>
+                    <li><a class="dropdown-item" href="{% url 'administra_tareas_vencimiento' %}">Administra tareas, por Vencimiento</a></li>
+                    <li><a class="dropdown-item" href="{% url 'registro_tareas' %}">Registro de tareas</a></li>
+                </ul>
+            </li>                  
+
+            {% if user.is_authenticated %}        
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}"><strong>Cerrar sesión</strong></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" style="color:#FF0000";><strong>Usuario activo: @{{ user.username}}</strong></a>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}"><strong>Iniciar sesión</strong></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'registro' %}" style="color:#eb7d15;"><strong>Registro usuarios</strong></a>
+            </li>
+            {% endif %}
+        </ul>
+      </div>
+    </nav>
+    </header>
+  </div>
+
+  <div class="container">
+    <br>
+    <h5 style="color:#a243f0;">Administración de Tareas, Tareas pendientes o en proceso</h5>    
+    <table class="table-secondary table-bordered border-primary bg-white">
+        <thead>
+          <tr style="background-color: rgb(183, 203, 242);">
+            <th scope="col">Id-Tarea</th>
+            <th scope="col">Título</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Vencimiento</th>
+            <th scope="col">Categoría</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Observaciones</th>
+            <th scope="col">Acción Editar</th>
+            <th scope="col">Acción Eliminar</th>
+            <th scope="col">Completa tarea</th>
+          </tr>
+        </thead>
+        {% for p in tareas %}    
+          {% if p.estado_tarea == '1' or p.estado_tarea == '2' %}
+          <tbody class="tareas">                                                                      
+                <tr>
+                  <td>{{p.id_tarea}}</td>
+                  <td><small>{{p.titulo_tarea}}</small></td>
+                  <td><small>{{p.descripcion_tarea}}</small></td>
+                  <td><small>{{p.fecha_vencimiento_tarea}}</small></td>
+
+                  {% if p.categoria_tarea == '1' %}
+                      <td><small>Trabajo</small></td>
+                      {% elif p.categoria_tarea == '2' %}
+                            <td><small>Hogar</small></td>
+                      {% elif p.categoria_tarea == '3' %}
+                            <td><small>Estudio</small></td>
+                          {% else %}
+                            <td><small>Otra categoría</small></td>
+                  {% endif %}
+
+                  {% if p.estado_tarea == '1' %}
+                      <td><small>Pendiente</small></td>
+                      {% else %}
+                          <td><small>En progreso</small></td>
+                  {% endif %}
+                  
+                  <td><small>{{p.observaciones_tarea}}</small></td>
+
+                  <td> <a name="" id="{p.id_tarea}" class="btn btn-info btn-lg active btn-sm" href="{% url 'modifica_tareas' p.id_tarea %}" role="button" type="button">Editar</a></td>
+                  <td> <a name="" id="{p.id_tarea}" class="btn btn-danger btn-lg active btn-sm" href="{% url 'elimina_tareas' p.id_tarea %}" role="button" type="button">Eliminar</a></td>   
+                  <td> <a name="" id="{p.id_tarea}" class="btn btn-success btn-lg active btn-sm" href="{% url 'completa_tareas' p.id_tarea %}" role="button" type="button">Completar</a></td>                                         
+            </tbody>
+              {% endif %}
+      {% endfor %}
+      </table>        
+  
+  <br> 
+  <h5 style="color:#4d82f3;"><strong>Administración de Tareas, Tareas terminadas</strong></h5>
+      <table class="table-secondary table-bordered border-primary bg-white">
+          <thead>
+            <tr style="background-color: rgb(183, 203, 242);">
+              <th scope="col">Id-Tarea</th>
+              <th scope="col">Título</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Vencimiento</th>
+              <th scope="col">Categoría</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Observaciones</th>
+              <th scope="col">Acción Editar</th>
+              <th scope="col">Acción Eliminar</th>
+            </tr>
+          </thead>
+          {% for p in tareas %}    
+            {% if p.estado_tarea == '3' %}
+              <tbody class="tareas">                                                                      
+                    <tr>
+                      <td>{{p.id_tarea}}</td>
+                      <td><small>{{p.titulo_tarea}}</small></td>
+                      <td><small>{{p.descripcion_tarea}}</small></td>
+                      <td><small>{{p.fecha_vencimiento_tarea}}</small></td>
+
+                      {% if p.categoria_tarea == '1' %}
+                          <td><small>Trabajo</small></td>
+                          {% elif p.categoria_tarea == '2' %}
+                                <td><small>Hogar</small></td>
+                          {% elif p.categoria_tarea == '3' %}
+                                <td><small>Estudio</small></td>
+                              {% else %}
+                                <td><small>Otra categoría</small></td>
+                      {% endif %}
+                      <td><small>Completada</small></td>
+
+                      <td><small>{{p.observaciones_tarea}}</small></td>
+
+                      <td> <a name="" id="{p.id_tarea}" class="btn btn-info btn-lg active btn-sm" href="{% url 'modifica_tareas' p.id_tarea %}" role="button" type="button">Editar</a></td>
+                      <td> <a name="" id="{p.id_tarea}" class="btn btn-danger btn-lg active btn-sm" href="{% url 'elimina_tareas' p.id_tarea %}" role="button" type="button">Eliminar</a></td>                 
+              </tbody>     
+            {% endif %}
+          {% endfor %}   
+        </table>        
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+</body>
+
+<br>
+<div class="container">
+<footer >
+  <div>
+    <p id="pie">
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=[url]"><img id="pie-img" src="{% static 'assets/imagenes/linkedin_socialnetwork_17441.png' %}" alt="Linkedin">Linkedin</a>
+      <a href="https://twitter.com/intent/tweet?text=[text]&url=[url]&hashtags=[hashtag]"><img id="pie-img" src="{% static 'assets/imagenes/twiter.png' %}" alt="Twitter">Twitter</a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://espai.es"><img id="pie-img" src="{% static 'assets/imagenes/facebook_logo_icon_229298.png' %}" alt="Facebook">Facebook</a>
+    </p>
+    <p>Copyright &copy; 2023 - Desarrollos Informáticos SA</p>
+  </div>
+</footer>
+</div>
+</html>
